@@ -20,7 +20,7 @@ public class TCNEIAdditions {
     public static final String NAME = "Thaumcraft NEI Additions";
     public static final String VERSION = "GRADLETOKEN_VERSION";
     public static final String DEPENDENCIES =
-            "required-after:Thaumcraft;required-after:thaumcraftneiplugin;required-after:spongemixins@[1.2.0,);";
+            "required-after:Thaumcraft;required-after:thaumcraftneiplugin;required-after:spongemixins@[1.2.0,);after:Automagy";
     public static final String GUI_FACTORY = "ru.timeconqueror.tcneiadditions.client.gui.GuiFactory";
 
     public static final Logger LOGGER = LogManager.getLogger(NAME);

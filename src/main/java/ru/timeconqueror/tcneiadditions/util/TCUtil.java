@@ -3,16 +3,23 @@ package ru.timeconqueror.tcneiadditions.util;
 import codechicken.nei.NEIServerUtils;
 import com.djgiannuzz.thaumcraftneiplugin.items.ItemAspect;
 import com.djgiannuzz.thaumcraftneiplugin.nei.NEIHelper;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import cpw.mods.fml.common.Loader;
+import java.util.*;
+import java.util.stream.Collectors;
+import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.oredict.OreDictionary;
 import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.api.ThaumcraftApiHelper;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.crafting.CrucibleRecipe;
 import thaumcraft.api.crafting.InfusionRecipe;
+import thaumcraft.api.research.ResearchCategories;
+import thaumcraft.api.research.ResearchItem;
+import thaumcraft.common.lib.research.ResearchManager;
+import tuhljin.automagy.config.ModResearchItems;
 
 public class TCUtil {
     public static List<InfusionRecipe> getInfusionRecipes(ItemStack result) {
@@ -126,5 +133,83 @@ public class TCUtil {
             }
         }
         return Collections.singletonList(stack);
+    }
+
+    public static void getResearchPrerequisites(List<String> list, ResearchItem researchItem) {
+        if (researchItem != null) {
+            String playerName = Minecraft.getMinecraft().getSession().getUsername();
+            // Parent research
+            getResearchListBuName(list, researchItem.parents, playerName, "parents");
+            // Parent hidden research
+            getResearchListBuName(list, researchItem.parentsHidden, playerName, "parentsHidden");
+            // Item scan
+            if (researchItem.getItemTriggers() != null && researchItem.getItemTriggers().length != 0) {
+                list.add(StatCollector.translateToLocal("tcneiadditions.research.prerequisites.item") + ":");
+                for (ItemStack itemStack : researchItem.getItemTriggers()) {
+                    String displayName = itemStack.getDisplayName();
+                    list.add("    " + displayName);
+                }
+            }
+            // Entity scan
+            if (researchItem.getEntityTriggers() != null && researchItem.getEntityTriggers().length != 0) {
+                list.add(StatCollector.translateToLocal("tcneiadditions.research.prerequisites.entity") + ":");
+                for (String entityKey : researchItem.getEntityTriggers()) {
+                    String entityName = StatCollector.translateToLocal("entity." + entityKey + ".name");
+                    list.add("    " + entityName);
+                }
+            }
+            // Aspect scan
+            if (researchItem.getAspectTriggers() != null && researchItem.getAspectTriggers().length != 0) {
+                list.add(StatCollector.translateToLocal("tcneiadditions.research.prerequisites.aspect") + ":");
+                for (Aspect aspect : researchItem.getAspectTriggers()) {
+                    String aspectName = aspect.getName() + " - " + aspect.getLocalizedDescription();
+                    list.add("    " + aspectName);
+                }
+            }
+            // Kill scan
+            if (Loader.isModLoaded("Automagy") && researchItem.category.equals("AUTOMAGY")) {
+                Set<String> killList = getKeysByValue(ModResearchItems.cluesOnKill, researchItem.key);
+                if (!killList.isEmpty()) {
+                    list.add(StatCollector.translateToLocal("tcneiadditions.research.prerequisites.kill") + ":");
+                    for (String entityKey : killList) {
+                        list.add("    " + StatCollector.translateToLocal("entity." + entityKey + ".name"));
+                    }
+                }
+            }
+        }
+    }
+
+    public static <T, E> Set<T> getKeysByValue(Map<T, E> map, E value) {
+        return map.entrySet().stream()
+                .filter(entry -> Objects.equals(entry.getValue(), value))
+                .map(Map.Entry::getKey)
+                .collect(Collectors.toSet());
+    }
+
+    public static void getResearchListBuName(List<String> list, String[] researchKeys, String playerName, String keysName) {
+        if (researchKeys != null && researchKeys.length != 0) {
+            int needResearch = 0;
+            list.add(StatCollector.translateToLocal("tcneiadditions.research.prerequisites." + keysName )+ ":");
+            for (String researchKey : researchKeys) {
+                String researchName =
+                        ResearchCategories.getCategoryName(ResearchCategories.getResearch(researchKey).category)
+                                + " : "
+                                + ResearchCategories.getResearch(researchKey).getName();
+                if (ResearchManager.isResearchComplete(playerName, researchKey)) {
+                    if (researchKeys.length <= 10) {
+                        researchName = EnumChatFormatting.GREEN + "" + EnumChatFormatting.STRIKETHROUGH + researchName;
+                        list.add(EnumChatFormatting.RESET + "    " + researchName);
+                    }
+                } else {
+                    needResearch++;
+                    researchName = EnumChatFormatting.RED + researchName;
+                    list.add(EnumChatFormatting.RESET + "    " + researchName);
+                }
+            }
+            if (researchKeys.length > 10 && needResearch == 0) {
+                list.add(EnumChatFormatting.GREEN + "    "
+                        + StatCollector.translateToLocal("tcneiadditions.research.prerequisites.allresearched"));
+            }
+        }
     }
 }

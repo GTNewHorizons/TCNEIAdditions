@@ -3,9 +3,17 @@ tcneiadditions.aspect_from_itemstack.still_load=Still loading... (%s/%s)
 tcneiadditions.aspect_combination.title=Aspect Combination
 
 tcneiadditions.research.missing=You haven't completed research required to craft this item
-tcneiadditions.research.researchKey=Research key: %s
-tcneiadditions.research.researchKey_rod=Rod Research key: %s
-tcneiadditions.research.researchKey_cap=Cap Research key: %s
+tcneiadditions.research.researchName=Research name
+tcneiadditions.research.researchName_rod=Rod Research name
+tcneiadditions.research.researchName_cap=Cap Research name
+tcneiadditions.research.prerequisites.parents=Parent research
+tcneiadditions.research.prerequisites.parentsHidden=Parent hidden research
+tcneiadditions.research.prerequisites.item=Scan item
+tcneiadditions.research.prerequisites.entity=Scan entity
+tcneiadditions.research.prerequisites.aspect=Scan aspect
+tcneiadditions.research.prerequisites.kill=Kill and Scan
+tcneiadditions.research.prerequisites.allresearched=You have done all the required research
+
 
 tcneiadditions.config.general=General
 
