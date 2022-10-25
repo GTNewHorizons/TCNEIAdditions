@@ -186,10 +186,11 @@ public class TCUtil {
                 .collect(Collectors.toSet());
     }
 
-    public static void getResearchListBuName(List<String> list, String[] researchKeys, String playerName, String keysName) {
+    public static void getResearchListBuName(
+            List<String> list, String[] researchKeys, String playerName, String keysName) {
         if (researchKeys != null && researchKeys.length != 0) {
             int needResearch = 0;
-            list.add(StatCollector.translateToLocal("tcneiadditions.research.prerequisites." + keysName )+ ":");
+            list.add(StatCollector.translateToLocal("tcneiadditions.research.prerequisites." + keysName) + ":");
             for (String researchKey : researchKeys) {
                 String researchName =
                         ResearchCategories.getCategoryName(ResearchCategories.getResearch(researchKey).category)
