@@ -15,7 +15,6 @@ import thaumcraft.api.aspects.Aspect;
 import thaumcraft.common.Thaumcraft;
 import codechicken.lib.gui.GuiDraw;
 import codechicken.nei.PositionedStack;
-import codechicken.nei.recipe.GuiRecipeTab;
 import codechicken.nei.recipe.TemplateRecipeHandler;
 
 import com.djgiannuzz.thaumcraftneiplugin.ModItems;
@@ -52,7 +51,6 @@ public class AspectCombinationHandler extends TemplateRecipeHandler {
 
     @Override
     public void loadUsageRecipes(ItemStack ingredient) {
-        GuiRecipeTab.loadHandlerInfo();
         if (ingredient.getItem() instanceof ItemAspect) {
             Aspect aspect = ItemAspect.getAspects(ingredient).getAspects()[0];
 
