@@ -398,7 +398,7 @@ public class ArcaneCraftingShapedHandler extends ArcaneShapedRecipeHandler {
     }
 
     @Override
-    public List<String> handleTooltip(GuiRecipe gui, List<String> list, int recipeIndex) {
+    public List<String> handleTooltip(GuiRecipe<?> gui, List<String> list, int recipeIndex) {
         if (TCNAConfig.showResearchKey) {
             if (GuiContainerManager.shouldShowTooltip(gui) && list.size() == 0) {
                 CachedRecipe cRecipe = arecipes.get(recipeIndex);
@@ -430,7 +430,7 @@ public class ArcaneCraftingShapedHandler extends ArcaneShapedRecipeHandler {
         return super.handleTooltip(gui, list, recipeIndex);
     }
 
-    protected Rectangle getResearchNormalRect(GuiRecipe gui, int recipeIndex) {
+    protected Rectangle getResearchNormalRect(GuiRecipe<?> gui, int recipeIndex) {
         Point offset = gui.getRecipePosition(recipeIndex);
         return new Rectangle(
                 GuiRecipeHelper.getGuiLeft(gui) + offset.x + 2,
@@ -439,7 +439,7 @@ public class ArcaneCraftingShapedHandler extends ArcaneShapedRecipeHandler {
                 this.ySizeNormal);
     }
 
-    protected Rectangle getResearchRodRect(GuiRecipe gui, int recipeIndex) {
+    protected Rectangle getResearchRodRect(GuiRecipe<?> gui, int recipeIndex) {
         Point offset = gui.getRecipePosition(recipeIndex);
         return new Rectangle(
                 GuiRecipeHelper.getGuiLeft(gui) + offset.x + 2,
@@ -448,7 +448,7 @@ public class ArcaneCraftingShapedHandler extends ArcaneShapedRecipeHandler {
                 this.ySizeRod);
     }
 
-    protected Rectangle getResearchCapRect(GuiRecipe gui, int recipeIndex) {
+    protected Rectangle getResearchCapRect(GuiRecipe<?> gui, int recipeIndex) {
         Point offset = gui.getRecipePosition(recipeIndex);
         return new Rectangle(
                 GuiRecipeHelper.getGuiLeft(gui) + offset.x + 2,

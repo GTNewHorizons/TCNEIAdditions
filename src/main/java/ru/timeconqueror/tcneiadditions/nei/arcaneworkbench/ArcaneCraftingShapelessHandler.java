@@ -157,7 +157,7 @@ public class ArcaneCraftingShapelessHandler extends ArcaneShapelessRecipeHandler
     }
 
     @Override
-    public List<String> handleTooltip(GuiRecipe gui, List<String> list, int recipeIndex) {
+    public List<String> handleTooltip(GuiRecipe<?> gui, List<String> list, int recipeIndex) {
         if (TCNAConfig.showResearchKey) {
             if (GuiContainerManager.shouldShowTooltip(gui) && list.size() == 0) {
                 ArcaneShapelessCachedRecipe recipe = (ArcaneShapelessCachedRecipe) arecipes.get(recipeIndex);
@@ -171,7 +171,7 @@ public class ArcaneCraftingShapelessHandler extends ArcaneShapelessRecipeHandler
         return super.handleTooltip(gui, list, recipeIndex);
     }
 
-    protected Rectangle getResearchRect(GuiRecipe gui, int recipeIndex) {
+    protected Rectangle getResearchRect(GuiRecipe<?> gui, int recipeIndex) {
         Point offset = gui.getRecipePosition(recipeIndex);
         return new Rectangle(
                 GuiRecipeHelper.getGuiLeft(gui) + offset.x + 2,
