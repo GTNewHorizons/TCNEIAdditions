@@ -15,7 +15,8 @@ public enum TargetedMod {
 
     // Replace with your injected mods here, but always keep VANILLA:
     VANILLA("Minecraft", "unused", true),
-    THAUMCRAFT("Thaumcraft", "Thaumcraft-1.7.10", true);
+    THAUMCRAFT("Thaumcraft", "Thaumcraft-1.7.10", true),
+    THAUMCRAFTNEIPLUGIN("thaumcraftneiplugin", "thaumcraftneiplugin", true);
 
     public final String modName;
     public final String jarNamePrefixLowercase;

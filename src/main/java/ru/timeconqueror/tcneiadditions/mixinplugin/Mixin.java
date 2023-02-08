@@ -16,7 +16,14 @@ public enum Mixin {
     // Exception: Tags.java, as long as it is used for Strings only!
     //
 
-    MappingThreadMixin("thaumcraft.MappingThreadMixin", Side.CLIENT, THAUMCRAFT);
+    MappingThreadMixin("thaumcraft.MappingThreadMixin", Side.CLIENT, THAUMCRAFT),
+    ArcaneShapedRecipeHandlerMixin("thaumcraftneiplugin.ArcaneShapedRecipeHandlerMixin", Side.CLIENT,
+            THAUMCRAFTNEIPLUGIN),
+    ArcaneShapelessRecipeHandlerMixin("thaumcraftneiplugin.ArcaneShapelessRecipeHandlerMixin", Side.CLIENT,
+            THAUMCRAFTNEIPLUGIN),
+    AspectRecipeHandlerMixin("thaumcraftneiplugin.AspectRecipeHandlerMixin", Side.CLIENT, THAUMCRAFTNEIPLUGIN),
+    CrucibleRecipeHandlerMixin("thaumcraftneiplugin.CrucibleRecipeHandlerMixin", Side.CLIENT, THAUMCRAFTNEIPLUGIN),
+    InfusionRecipeHandlerMixin("thaumcraftneiplugin.InfusionRecipeHandlerMixin", Side.CLIENT, THAUMCRAFTNEIPLUGIN);
 
     public final String mixinClass;
     public final List<TargetedMod> targetedMods;
