@@ -39,6 +39,7 @@ public class TCNAInfusionRecipeHandler extends InfusionRecipeHandler {
 
     private final String userName = Minecraft.getMinecraft().getSession().getUsername();
     private int ySize;
+    private final int aspectsPerRow = 7;
 
     @Override
     public void loadCraftingRecipes(String outputId, Object... results) {
@@ -148,7 +149,6 @@ public class TCNAInfusionRecipeHandler extends InfusionRecipeHandler {
     @Override
     public void drawAspects(int recipe, int x, int y) {
         AspectList aspects = this.aspectsAmount.get(recipe);
-        int aspectsPerRow = 7;
         int rows = (int) Math.ceil((double) aspects.size() / aspectsPerRow);
         int baseX = x + 8;
         int baseY = y + 173;
@@ -329,7 +329,6 @@ public class TCNAInfusionRecipeHandler extends InfusionRecipeHandler {
         }
 
         protected void addAspectsToIngredients(AspectList aspects) {
-            int aspectsPerRow = 7;
             int rows = (int) Math.ceil((double) aspects.size() / aspectsPerRow);
             int baseX = 35;
             int baseY = 129;

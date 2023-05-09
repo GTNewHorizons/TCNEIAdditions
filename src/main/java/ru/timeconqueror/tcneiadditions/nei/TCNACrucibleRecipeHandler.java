@@ -36,6 +36,7 @@ public class TCNACrucibleRecipeHandler extends CrucibleRecipeHandler {
 
     private final String userName = Minecraft.getMinecraft().getSession().getUsername();
     private int ySize;
+    private final int aspectsPerRow = 3;
 
     @Override
     public void loadCraftingRecipes(String outputId, Object... results) {
@@ -107,11 +108,10 @@ public class TCNACrucibleRecipeHandler extends CrucibleRecipeHandler {
     @Override
     public void drawAspects(int recipe, int x, int y) {
         AspectList aspects = this.aspectsAmount.get(recipe);
-        int aspectsPerRow = 3;
         int rows = (int) Math.ceil((double) aspects.size() / aspectsPerRow);
 
         int xBase = x + 8;
-        int yBase = y + 75 + 32 - 10 * rows;
+        int yBase = y + 107 - (10 * rows);
         int count = 0;
 
         for (int row = 0; row < rows; row++) {
@@ -259,11 +259,10 @@ public class TCNACrucibleRecipeHandler extends CrucibleRecipeHandler {
         }
 
         protected void addAspectsToIngredients(AspectList aspects) {
-            int aspectsPerRow = 3;
             int rows = (int) Math.ceil((double) aspects.size() / aspectsPerRow);
 
             int xBase = 23 + 8;
-            int yBase = -21 + 75 + 32 - 10 * rows;
+            int yBase = -21 + 107 - (10 * rows);
             int count = 0;
 
             for (int row = 0; row < rows; row++) {
