@@ -415,6 +415,7 @@ public class ArcaneCraftingShapedHandler extends ArcaneShapedRecipeHandler {
             return stacks;
         }
 
+        // shaped crafting
         protected void addAspectsToIngredients(AspectList aspects) {
 
             int baseX = 36;
@@ -431,7 +432,6 @@ public class ArcaneCraftingShapedHandler extends ArcaneShapedRecipeHandler {
                 this.ingredients.add(new PositionedStack(stack, posX, baseY, false));
             }
         }
-
     }
 
     @Override
@@ -580,6 +580,7 @@ public class ArcaneCraftingShapedHandler extends ArcaneShapedRecipeHandler {
             return stacks;
         }
 
+        // Wand aspects
         protected void addAspectsToIngredients(AspectList aspects) {
 
             int baseX = 36;

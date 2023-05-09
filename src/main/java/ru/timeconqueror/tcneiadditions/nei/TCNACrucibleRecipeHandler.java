@@ -105,6 +105,7 @@ public class TCNACrucibleRecipeHandler extends CrucibleRecipeHandler {
         GL11.glPopMatrix();
     }
 
+    // Math in these looks a little weird to show similarity to other method above.
     @Override
     public void drawAspects(int recipe, int x, int y) {
         AspectList aspects = this.aspectsAmount.get(recipe);
@@ -258,6 +259,7 @@ public class TCNACrucibleRecipeHandler extends CrucibleRecipeHandler {
             return super.contains(ingredients, ingredient);
         }
 
+        // Math in these looks a little weird to show similarity to other method above.
         protected void addAspectsToIngredients(AspectList aspects) {
             int rows = (int) Math.ceil((double) aspects.size() / aspectsPerRow);
 
