@@ -1,6 +1,8 @@
 package ru.timeconqueror.tcneiadditions.nei;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Point;
+import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;

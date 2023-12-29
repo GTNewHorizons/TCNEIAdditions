@@ -1,8 +1,10 @@
 package ru.timeconqueror.tcneiadditions.nei;
 
-import static codechicken.lib.gui.GuiDraw.*;
+import static codechicken.lib.gui.GuiDraw.changeTexture;
+import static codechicken.lib.gui.GuiDraw.drawString;
+import static codechicken.lib.gui.GuiDraw.drawTexturedModalRect;
 
-import java.awt.*;
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;

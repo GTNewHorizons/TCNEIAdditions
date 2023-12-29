@@ -1,7 +1,11 @@
 package ru.timeconqueror.tcneiadditions.nei;
 
-import java.awt.*;
-import java.util.*;
+import java.awt.Color;
+import java.awt.Point;
+import java.awt.Rectangle;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import net.minecraft.client.Minecraft;
