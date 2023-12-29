@@ -1,10 +1,13 @@
 package ru.timeconqueror.tcneiadditions;
 
+import org.apache.commons.lang3.reflect.FieldUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
+import cpw.mods.fml.common.event.FMLConstructionEvent;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
@@ -33,6 +36,22 @@ public class TCNEIAdditions {
             clientSide = "ru.timeconqueror.tcneiadditions.proxy.ClientProxy",
             serverSide = "ru.timeconqueror.tcneiadditions.proxy.ServerProxy")
     public static CommonProxy proxy;
+
+    public static String thaumcraftNEIPluginVersion;
+
+    @Mod.EventHandler
+    public void construct(FMLConstructionEvent event) {
+        Loader.instance().getModList().stream().filter(mod -> "thaumcraftneiplugin".equals(mod.getModId())).findAny()
+                .ifPresent(mod -> {
+                    thaumcraftNEIPluginVersion = mod.getMetadata().version;
+                    try {
+                        // replace @VERSION@ with actual mod version
+                        FieldUtils.writeField(mod, "internalVersion", thaumcraftNEIPluginVersion, true);
+                    } catch (Exception e) {
+                        LOGGER.warn("Failed to set internal version of Thaumcraft NEI Plugin!", e);
+                    }
+                });
+    }
 
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
