@@ -3,7 +3,7 @@ package ru.timeconqueror.tcneiadditions.mixins;
 import cpw.mods.fml.common.Mod;
 
 public enum TargetedMod {
-    
+
     VANILLA("Minecraft", null),
     THAUMCRAFT("Thaumcraft", null, "Thaumcraft"), // "thaumcraft.codechicken.core.launch.DepLoader"
     THAUMCRAFTNEIPLUGIN("Thaumcraft NEI Plugin", null, "thaumcraftneiplugin");

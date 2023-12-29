@@ -11,7 +11,7 @@ import com.gtnewhorizon.gtnhmixins.LateMixin;
 
 @LateMixin
 public class TCNEIAdditionsLateMixins implements ILateMixinLoader {
-    
+
     static final Logger LOG = LogManager.getLogger("Thaumcraft NEI Additions Mixins");
 
     @Override

@@ -10,10 +10,21 @@ import java.util.function.Supplier;
 import cpw.mods.fml.relauncher.FMLLaunchHandler;
 
 public enum Mixins {
-    
-    FIX_RECIPEHANDLER_NPES(new Builder("Fix RecipeHandler NPEs").addMixinClasses("thaumcraftneiplugin.ArcaneShapedRecipeHandlerMixin", "thaumcraftneiplugin.ArcaneShapelessRecipeHandlerMixin", "thaumcraftneiplugin.AspectRecipeHandlerMixin", "thaumcraftneiplugin.CrucibleRecipeHandlerMixin", "thaumcraftneiplugin.InfusionRecipeHandlerMixin").addTargetedMod(TargetedMod.THAUMCRAFTNEIPLUGIN).setApplyIf(() -> true).setPhase(Phase.LATE).setSide(Side.CLIENT)),
-    MAPPING_THREAD_HOOK(new Builder("Hook into MappingThread").addMixinClasses("thaumcraft.MappingThreadMixin").addTargetedMod(TargetedMod.THAUMCRAFT).setApplyIf(() -> true).setPhase(Phase.LATE).setSide(Side.CLIENT)),
-    FIX_NEICONFIG_VERSION(new Builder("Fix NEIConfig version").addMixinClasses("thaumcraftneiplugin.NEIConfigMixin").addTargetedMod(TargetedMod.THAUMCRAFTNEIPLUGIN).setApplyIf(() -> true).setPhase(Phase.LATE).setSide(Side.CLIENT));
+
+    FIX_RECIPEHANDLER_NPES(new Builder("Fix RecipeHandler NPEs")
+            .addMixinClasses(
+                    "thaumcraftneiplugin.ArcaneShapedRecipeHandlerMixin",
+                    "thaumcraftneiplugin.ArcaneShapelessRecipeHandlerMixin",
+                    "thaumcraftneiplugin.AspectRecipeHandlerMixin",
+                    "thaumcraftneiplugin.CrucibleRecipeHandlerMixin",
+                    "thaumcraftneiplugin.InfusionRecipeHandlerMixin")
+            .addTargetedMod(TargetedMod.THAUMCRAFTNEIPLUGIN).setApplyIf(() -> true).setPhase(Phase.LATE)
+            .setSide(Side.CLIENT)),
+    MAPPING_THREAD_HOOK(new Builder("Hook into MappingThread").addMixinClasses("thaumcraft.MappingThreadMixin")
+            .addTargetedMod(TargetedMod.THAUMCRAFT).setApplyIf(() -> true).setPhase(Phase.LATE).setSide(Side.CLIENT)),
+    FIX_NEICONFIG_VERSION(new Builder("Fix NEIConfig version").addMixinClasses("thaumcraftneiplugin.NEIConfigMixin")
+            .addTargetedMod(TargetedMod.THAUMCRAFTNEIPLUGIN).setApplyIf(() -> true).setPhase(Phase.LATE)
+            .setSide(Side.CLIENT));
 
     private final List<String> mixinClasses;
     private final List<TargetedMod> targetedMods;
