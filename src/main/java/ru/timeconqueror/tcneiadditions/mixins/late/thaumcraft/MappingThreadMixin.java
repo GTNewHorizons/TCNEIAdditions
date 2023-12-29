@@ -1,4 +1,4 @@
-package ru.timeconqueror.tcneiadditions.mixins.thaumcraft;
+package ru.timeconqueror.tcneiadditions.mixins.late.thaumcraft;
 
 import java.util.Map;
 

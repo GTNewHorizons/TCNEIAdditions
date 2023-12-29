@@ -1,4 +1,4 @@
-package ru.timeconqueror.tcneiadditions.mixins.thaumcraftneiplugin;
+package ru.timeconqueror.tcneiadditions.mixins.late.thaumcraftneiplugin;
 
 import net.minecraft.client.entity.EntityClientPlayerMP;
 
@@ -6,10 +6,10 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
-import com.djgiannuzz.thaumcraftneiplugin.nei.recipehandler.CrucibleRecipeHandler;
+import com.djgiannuzz.thaumcraftneiplugin.nei.recipehandler.InfusionRecipeHandler;
 
-@Mixin(CrucibleRecipeHandler.class)
-public class CrucibleRecipeHandlerMixin {
+@Mixin(InfusionRecipeHandler.class)
+public class InfusionRecipeHandlerMixin {
 
     @Redirect(
             method = "<init>",

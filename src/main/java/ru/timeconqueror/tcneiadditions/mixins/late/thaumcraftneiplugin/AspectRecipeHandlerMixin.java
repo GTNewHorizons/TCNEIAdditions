@@ -1,4 +1,4 @@
-package ru.timeconqueror.tcneiadditions.mixins.thaumcraftneiplugin;
+package ru.timeconqueror.tcneiadditions.mixins.late.thaumcraftneiplugin;
 
 import net.minecraft.client.entity.EntityClientPlayerMP;
 
