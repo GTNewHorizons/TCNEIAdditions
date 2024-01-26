@@ -1,5 +1,6 @@
 package ru.timeconqueror.tcneiadditions.util;
 
+import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -9,6 +10,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
@@ -17,7 +19,9 @@ import net.minecraftforge.oredict.OreDictionary;
 import com.djgiannuzz.thaumcraftneiplugin.items.ItemAspect;
 import com.djgiannuzz.thaumcraftneiplugin.nei.NEIHelper;
 
+import codechicken.lib.gui.GuiDraw;
 import codechicken.nei.NEIServerUtils;
+import codechicken.nei.recipe.TemplateRecipeHandler;
 import cpw.mods.fml.common.Loader;
 import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.api.ThaumcraftApiHelper;
@@ -220,5 +224,24 @@ public class TCUtil {
                                         .translateToLocal("tcneiadditions.research.prerequisites.allresearched"));
             }
         }
+    }
+
+    public static void loadTransferRects(TemplateRecipeHandler handler) {
+        int stringLength = GuiDraw.getStringWidth(
+                EnumChatFormatting.BOLD + StatCollector.translateToLocal("tcneiadditions.gui.nei.seeAll"));
+        handler.transferRects.add(
+                new TemplateRecipeHandler.RecipeTransferRect(
+                        new Rectangle(162 - stringLength, 5, stringLength, 9),
+                        handler.getOverlayIdentifier(),
+                        new Object[0]));
+    }
+
+    public static void drawSeeAllRecipesLabel() {
+        GuiDraw.drawStringR(
+                EnumChatFormatting.BOLD + I18n.format("tcneiadditions.gui.nei.seeAll"),
+                162,
+                5,
+                0x404040,
+                false);
     }
 }

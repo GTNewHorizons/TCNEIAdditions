@@ -43,6 +43,11 @@ public class TCNACrucibleRecipeHandler extends CrucibleRecipeHandler {
     private final int aspectsPerRow = 3;
 
     @Override
+    public void loadTransferRects() {
+        TCUtil.loadTransferRects(this);
+    }
+
+    @Override
     public void loadCraftingRecipes(String outputId, Object... results) {
         if (outputId.equals(this.getOverlayIdentifier())) {
             for (Object o : ThaumcraftApi.getCraftingRecipes()) {
@@ -163,6 +168,8 @@ public class TCNACrucibleRecipeHandler extends CrucibleRecipeHandler {
                 y += 11;
             }
         }
+
+        TCUtil.drawSeeAllRecipesLabel();
     }
 
     @Override

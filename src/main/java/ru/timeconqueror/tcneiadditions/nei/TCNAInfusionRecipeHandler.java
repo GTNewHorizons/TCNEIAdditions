@@ -44,6 +44,11 @@ public class TCNAInfusionRecipeHandler extends InfusionRecipeHandler {
     private final int aspectsPerRow = 7;
 
     @Override
+    public void loadTransferRects() {
+        TCUtil.loadTransferRects(this);
+    }
+
+    @Override
     public void loadCraftingRecipes(String outputId, Object... results) {
         if (outputId.equals(this.getOverlayIdentifier())) {
             for (Object o : ThaumcraftApi.getCraftingRecipes()) {
@@ -146,6 +151,8 @@ public class TCNAInfusionRecipeHandler extends InfusionRecipeHandler {
                 y += 11;
             }
         }
+
+        TCUtil.drawSeeAllRecipesLabel();
     }
 
     @Override

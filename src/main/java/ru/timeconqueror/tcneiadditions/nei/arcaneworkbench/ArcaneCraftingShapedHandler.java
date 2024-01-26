@@ -50,6 +50,11 @@ public class ArcaneCraftingShapedHandler extends ArcaneShapedRecipeHandler {
     private int ySizeNormal, ySizeRod, ySizeCap;
 
     @Override
+    public void loadTransferRects() {
+        TCUtil.loadTransferRects(this);
+    }
+
+    @Override
     public void loadCraftingRecipes(String outputId, Object... results) {
         if (outputId.equals(this.getOverlayIdentifier())) {
             for (Object o : ThaumcraftApi.getCraftingRecipes()) {
@@ -314,6 +319,8 @@ public class ArcaneCraftingShapedHandler extends ArcaneShapedRecipeHandler {
                 }
             }
         }
+
+        TCUtil.drawSeeAllRecipesLabel();
     }
 
     private class ArcaneShapedCachedRecipe extends ShapedRecipeHandler.CachedShapedRecipe

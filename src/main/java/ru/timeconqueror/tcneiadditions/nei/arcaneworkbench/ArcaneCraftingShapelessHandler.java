@@ -44,6 +44,11 @@ public class ArcaneCraftingShapelessHandler extends ArcaneShapelessRecipeHandler
     private int ySize;
 
     @Override
+    public void loadTransferRects() {
+        TCUtil.loadTransferRects(this);
+    }
+
+    @Override
     public void loadCraftingRecipes(String outputId, Object... results) {
         if (outputId.equals(this.getOverlayIdentifier())) {
             for (Object o : ThaumcraftApi.getCraftingRecipes()) {
@@ -170,6 +175,8 @@ public class ArcaneCraftingShapelessHandler extends ArcaneShapelessRecipeHandler
                 y += 11;
             }
         }
+
+        TCUtil.drawSeeAllRecipesLabel();
     }
 
     private boolean isValidInput(Object input) {
