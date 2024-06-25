@@ -13,15 +13,6 @@
 		],
 		"credits": "",
 		"logoFile": "",
-		"screenshots": [],
-		"requiredMods": [
-			"Thaumcraft",
-			"thaumcraftneiplugin", "spongemixins@[1.1.0,)"
-		],
-		"dependencies": [
-			"Thaumcraft",
-			"thaumcraftneiplugin", "spongemixins@[1.1.0,)"
-		],
-		"useDependencyInformation": true
+		"screenshots": []
 	}]
 }
