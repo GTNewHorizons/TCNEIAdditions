@@ -246,7 +246,7 @@ public class ArcaneCraftingShapelessHandler extends ArcaneShapelessRecipeHandler
                                 items.get(x),
                                 positions[x][0] + shiftX,
                                 positions[x][1] + shiftY,
-                                false);
+                                items.get(x) instanceof ItemStack);
                         stack.setMaxSize(1);
                         this.ingredients.add(stack);
                     }

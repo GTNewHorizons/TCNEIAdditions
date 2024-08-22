@@ -562,7 +562,7 @@ public class ArcaneCraftingShapedHandler extends ArcaneShapedRecipeHandler {
                                 object,
                                 positions[y * width + x][0] + shiftX,
                                 positions[y * width + x][1] + shiftY,
-                                false);
+                                object instanceof ItemStack);
                         stack.setMaxSize(1);
                         this.ingredients.add(stack);
                     }
