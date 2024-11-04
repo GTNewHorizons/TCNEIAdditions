@@ -260,7 +260,7 @@ public class TCNAInfusionRecipeHandler extends InfusionRecipeHandler {
             int y = -35;
             int le = recipe.getComponents().length;
             ArrayList<Point> coords = new ArrayList<>();
-            float pieSlice = (float) (360 / le);
+            float pieSlice = 360f / le;
             float currentRot = -90.0F;
 
             int total;
