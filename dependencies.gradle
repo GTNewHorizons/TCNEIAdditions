@@ -9,5 +9,5 @@ dependencies {
     compileOnly 'org.jetbrains:annotations:23.0.0'
     compileOnly 'curse.maven:automagy-222153:2285272'
 
-    runtimeOnly 'com.github.GTNewHorizons:Baubles:1.0.4:dev'
+    runtimeOnly 'com.github.GTNewHorizons:Baubles-Expanded:2.1.7-GTNH:dev'
 }
