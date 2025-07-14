@@ -1,32 +1,24 @@
 package ru.timeconqueror.tcneiadditions.mixins;
 
-import cpw.mods.fml.common.Mod;
+import org.jetbrains.annotations.NotNull;
 
-public enum TargetedMod {
+import com.gtnewhorizon.gtnhmixins.builders.ITargetMod;
+import com.gtnewhorizon.gtnhmixins.builders.TargetModBuilder;
 
-    VANILLA("Minecraft", null),
-    THAUMCRAFT("Thaumcraft", null, "Thaumcraft"), // "thaumcraft.codechicken.core.launch.DepLoader"
-    THAUMCRAFTNEIPLUGIN("Thaumcraft NEI Plugin", null, "thaumcraftneiplugin");
+public enum TargetedMod implements ITargetMod {
 
-    /** The "name" in the {@link Mod @Mod} annotation */
-    public final String modName;
-    /** Class that implements the IFMLLoadingPlugin interface */
-    public final String coreModClass;
-    /** The "modid" in the {@link Mod @Mod} annotation */
-    public final String modId;
+    THAUMCRAFT("Thaumcraft"),
+    THAUMCRAFTNEIPLUGIN("thaumcraftneiplugin");
 
-    TargetedMod(String modName, String coreModClass) {
-        this(modName, coreModClass, null);
+    private final TargetModBuilder builder;
+
+    TargetedMod(String modId) {
+        this.builder = new TargetModBuilder().setModId(modId);
     }
 
-    TargetedMod(String modName, String coreModClass, String modId) {
-        this.modName = modName;
-        this.coreModClass = coreModClass;
-        this.modId = modId;
-    }
-
+    @NotNull
     @Override
-    public String toString() {
-        return "TargetedMod{modName='" + modName + "', coreModClass='" + coreModClass + "', modId='" + modId + "'}";
+    public TargetModBuilder getBuilder() {
+        return builder;
     }
 }
