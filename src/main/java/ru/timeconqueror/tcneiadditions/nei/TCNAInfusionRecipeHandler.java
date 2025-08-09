@@ -7,6 +7,9 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import net.glease.tc4tweak.api.infusionrecipe.EnhancedInfusionRecipe;
+import net.glease.tc4tweak.api.infusionrecipe.InfusionRecipeExt;
+import net.glease.tc4tweak.api.infusionrecipe.RecipeIngredient;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
@@ -269,12 +272,13 @@ public class TCNAInfusionRecipeHandler extends InfusionRecipeHandler {
             return this.instability;
         }
 
-        protected void setIngredients(InfusionRecipe recipe) {
+        protected void setIngredients(InfusionRecipe recipeLegacy) {
+            EnhancedInfusionRecipe r = InfusionRecipeExt.get().convert(recipeLegacy);
             this.ingredients = new ArrayList<>();
-            this.ingredients.add(new PositionedStack(recipe.getRecipeInput(), 75, 58));
+            this.ingredients.add(new PositionedStack(r.getCentral().getRepresentativeStacks(), 75, 58));
             int x = 27;
             int y = -35;
-            int le = recipe.getComponents().length;
+            int le = r.getComponentsExt().size();
             ArrayList<Point> coords = new ArrayList<>();
             float pieSlice = 360f / le;
             float currentRot = -90.0F;
@@ -293,13 +297,10 @@ public class TCNAInfusionRecipeHandler extends InfusionRecipeHandler {
             sx = x + 56;
             sy = y + 102;
 
-            for (ItemStack itemStack : recipe.getComponents()) {
-                ItemStack ingredient = TCUtil.getAssociatedItemStack(itemStack);
-                ingredient.stackSize = 1;
+            for (RecipeIngredient ingredient : r.getComponentsExt()) {
                 int vx = sx + coords.get(total).x;
                 int vy = sy + coords.get(total).y;
-                this.ingredients
-                        .add(new PositionedStack(TCUtil.getOreDictionaryMatchingItemsForInfusion(ingredient), vx, vy));
+                this.ingredients.add(new PositionedStack(ingredient.getRepresentativeStacks(), vx, vy));
                 ++total;
             }
         }

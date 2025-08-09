@@ -8,11 +8,12 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import net.glease.tc4tweak.api.infusionrecipe.EnhancedInfusionRecipe;
+import net.glease.tc4tweak.api.infusionrecipe.InfusionRecipeExt;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
-import net.minecraftforge.oredict.OreDictionary;
 
 import com.djgiannuzz.thaumcraftneiplugin.items.ItemAspect;
 import com.djgiannuzz.thaumcraftneiplugin.nei.NEIHelper;
@@ -66,8 +67,8 @@ public class TCUtil {
         ArrayList<InfusionRecipe> list = new ArrayList<>();
         for (Object r : ThaumcraftApi.getCraftingRecipes()) {
             if (!(r instanceof InfusionRecipe)) continue;
-            InfusionRecipe tcRecipe = (InfusionRecipe) r;
-            if (tcRecipe.getRecipeInput() == null || TCUtil.getAssociatedItemStack(tcRecipe.getRecipeOutput()) == null)
+            EnhancedInfusionRecipe tcRecipe = InfusionRecipeExt.get().convert((InfusionRecipe) r);
+            if (tcRecipe.getCentral() == null || TCUtil.getAssociatedItemStack(tcRecipe.getRecipeOutput()) == null)
                 continue;
 
             if (input.getItem() instanceof ItemAspect) {
@@ -76,8 +77,8 @@ public class TCUtil {
                     list.add(tcRecipe);
                 }
             } else {
-                if (NEIServerUtils.areStacksSameTypeCraftingWithNBT(tcRecipe.getRecipeInput(), input)
-                        || matchInfusionComponents(tcRecipe.getComponents(), input)) {
+                if (tcRecipe.getCentral().matches(input)
+                        || tcRecipe.getComponentsExt().stream().anyMatch(i -> i.matches(input))) {
                     list.add(tcRecipe);
                 }
             }
@@ -106,17 +107,6 @@ public class TCUtil {
         return list;
     }
 
-    public static boolean matchInfusionComponents(ItemStack[] components, ItemStack stack) {
-        for (ItemStack component : components) {
-            for (ItemStack toCompare : getOreDictionaryMatchingItemsForInfusion(component)) {
-                if (NEIServerUtils.areStacksSameTypeCraftingWithNBT(toCompare, stack)) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
     public static boolean shouldShowRecipe(String username, String researchKey) {
         return ThaumcraftApiHelper.isResearchComplete(username, researchKey) || TCNAConfig.showLockedRecipes;
     }
@@ -130,23 +120,6 @@ public class TCUtil {
             }
         }
         return NEIHelper.getAssociatedItemStack(o);
-    }
-
-    public static List<ItemStack> getOreDictionaryMatchingItemsForInfusion(ItemStack stack) {
-        // Because of InfusionRecipe#areItemStacksEqual looking for only the first oredict matching for the ingredient,
-        // ingredients that have multiple oredict entries cannot be reliably used as alternative for the recipe input.
-        List<ItemStack> result = new ArrayList<>();
-        for (int oreID : OreDictionary.getOreIDs(stack)) {
-            for (ItemStack matchedStack : OreDictionary.getOres(OreDictionary.getOreName(oreID))) {
-                if (matchedStack.getItemDamage() != OreDictionary.WILDCARD_VALUE
-                        && OreDictionary.getOreIDs(matchedStack).length == 1
-                        && !NEIServerUtils.areStacksSameTypeCrafting(matchedStack, stack)) {
-                    result.add(matchedStack);
-                }
-            }
-        }
-        result.add(stack);
-        return result;
     }
 
     public static void getResearchPrerequisites(List<String> list, ResearchItem researchItem) {
