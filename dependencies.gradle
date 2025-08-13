@@ -4,7 +4,9 @@ dependencies {
     implementation 'com.github.GTNewHorizons:NotEnoughItems:2.7.72-GTNH:dev'
 
     implementation 'thaumcraft:Thaumcraft:1.7.10-4.2.3.5:dev'
-    implementation 'curse.maven:thaumcraft-nei-plugin-225095:2241913'
+    implementation rfg.deobf('curse.maven:thaumcraft-nei-plugin-225095:2241913')
+
+    implementation 'net.glease:tc4recipelib:1.5.37:dev'
 
     compileOnly 'org.jetbrains:annotations:23.0.0'
     compileOnly 'curse.maven:automagy-222153:2285272'
