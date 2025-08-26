@@ -26,6 +26,7 @@ import ru.timeconqueror.tcneiadditions.client.TCNAClient;
 import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.api.ThaumcraftApiHelper;
 import thaumcraft.api.aspects.Aspect;
+import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.crafting.CrucibleRecipe;
 import thaumcraft.api.crafting.InfusionRecipe;
 import thaumcraft.api.research.ResearchCategories;
@@ -64,25 +65,68 @@ public class TCUtil {
     }
 
     public static List<InfusionRecipe> getInfusionRecipesByInput(ItemStack input) {
-        ArrayList<InfusionRecipe> list = new ArrayList<>();
-        for (Object r : ThaumcraftApi.getCraftingRecipes()) {
-            if (!(r instanceof InfusionRecipe)) continue;
-            EnhancedInfusionRecipe tcRecipe = InfusionRecipeExt.get().convert((InfusionRecipe) r);
-            if (tcRecipe.getCentral() == null || TCUtil.getAssociatedItemStack(tcRecipe.getRecipeOutput()) == null)
-                continue;
+        final ArrayList<InfusionRecipe> list = new ArrayList<>();
 
-            if (input.getItem() instanceof ItemAspect) {
-                Aspect aspect = ItemAspect.getAspects(input).getAspects()[0];
-                if (tcRecipe.getAspects().aspects.containsKey(aspect)) {
-                    list.add(tcRecipe);
-                }
+        // if input is an Aspect item, pre-read its aspect safely
+        Aspect inputAspect = null;
+        boolean inputIsAspectItem = input != null && input.getItem() instanceof ItemAspect;
+        if (inputIsAspectItem) {
+            AspectList alt = ItemAspect.getAspects(input);
+            if (alt != null && alt.getAspects() != null && alt.getAspects().length > 0) {
+                inputAspect = alt.getAspects()[0];
             } else {
-                if (tcRecipe.getCentral().matches(input)
-                        || tcRecipe.getComponentsExt().stream().anyMatch(i -> i.matches(input))) {
-                    list.add(tcRecipe);
-                }
+                return list;
             }
         }
+
+        for (Object r : ThaumcraftApi.getCraftingRecipes()) {
+            if (!(r instanceof InfusionRecipe)) continue;
+            InfusionRecipe raw = (InfusionRecipe) r;
+
+            if (raw.getRecipeOutput() == null) continue;
+            Object[] comps = raw.getComponents();
+            if (comps == null) continue; // avoid null array stream
+
+            // keep bad recipe from killing the scan
+            EnhancedInfusionRecipe tcRecipe;
+            try {
+                tcRecipe = InfusionRecipeExt.get().convert(raw);
+            } catch (RuntimeException e) {
+                continue;
+            }
+            if (tcRecipe == null) continue;
+
+            if (tcRecipe.getCentral() == null || TCUtil.getAssociatedItemStack(tcRecipe.getRecipeOutput()) == null) {
+                continue;
+            }
+
+            boolean aspectsContain = false;
+            if (inputIsAspectItem && inputAspect != null
+                    && tcRecipe.getAspects() != null
+                    && tcRecipe.getAspects().aspects != null) {
+                aspectsContain = tcRecipe.getAspects().aspects.containsKey(inputAspect);
+            }
+
+            if (inputIsAspectItem) {
+                if (aspectsContain) list.add(tcRecipe);
+            } else {
+                boolean centralMatches = tcRecipe.getCentral().matches(input);
+
+                boolean componentMatches = false;
+                if (tcRecipe.getComponentsExt() != null && !tcRecipe.getComponentsExt().isEmpty()) {
+                    componentMatches = tcRecipe.getComponentsExt().stream().anyMatch(c -> {
+                        try {
+                            return c != null && c.matches(input);
+                        } catch (Throwable t) {
+                            return false;
+                        }
+                    });
+                }
+
+                if (centralMatches || componentMatches) list.add(tcRecipe);
+            }
+        }
+
         return list;
     }
 
