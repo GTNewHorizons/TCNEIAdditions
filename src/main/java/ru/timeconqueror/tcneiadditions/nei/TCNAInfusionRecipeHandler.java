@@ -53,6 +53,13 @@ public class TCNAInfusionRecipeHandler extends InfusionRecipeHandler {
     }
 
     @Override
+    public int getRecipeHeight(int recipe) {
+        final AspectList aspects = this.aspectsAmount.get(recipe);
+        final int rows = (int) Math.ceil((double) aspects.size() / aspectsPerRow);
+        return 152 + (rows - 1) * 20;
+    }
+
+    @Override
     public void loadCraftingRecipes(String outputId, Object... results) {
         if (outputId.equals(this.getOverlayIdentifier())) {
             for (Object o : ThaumcraftApi.getCraftingRecipes()) {
