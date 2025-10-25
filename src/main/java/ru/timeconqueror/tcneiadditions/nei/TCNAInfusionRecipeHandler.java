@@ -49,7 +49,7 @@ public class TCNAInfusionRecipeHandler extends InfusionRecipeHandler {
 
     @Override
     public void loadTransferRects() {
-        TCUtil.loadTransferRects(this);
+        TCUtil.loadTransferRects(this, 5);
     }
 
     @Override
@@ -158,7 +158,7 @@ public class TCNAInfusionRecipeHandler extends InfusionRecipeHandler {
             }
         }
 
-        TCUtil.drawSeeAllRecipesLabel();
+        TCUtil.drawSeeAllRecipesLabel(5);
     }
 
     @Override
