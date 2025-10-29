@@ -115,7 +115,7 @@ public class AspectFromItemStackHandler extends TemplateRecipeHandler {
             if (Thaumcraft.proxy.playerKnowledge.hasDiscoveredAspect(playerName, aspect)) {
                 final List<ItemStack> containingItemStacks = findContainingItemStacks(aspect);
                 if (!containingItemStacks.isEmpty()) {
-                    arecipes.add(new AspectCachedRecipe(aspect, containingItemStacks));
+                    new AspectCachedRecipe(aspect, containingItemStacks);
                 }
             }
         }
@@ -130,7 +130,7 @@ public class AspectFromItemStackHandler extends TemplateRecipeHandler {
                 if (Thaumcraft.proxy.playerKnowledge.hasDiscoveredAspect(playerName, aspect)) {
                     final List<ItemStack> containingItemStacks = findContainingItemStacks(aspect);
                     if (!containingItemStacks.isEmpty()) {
-                        arecipes.add(new AspectCachedRecipe(aspect, containingItemStacks));
+                        new AspectCachedRecipe(aspect, containingItemStacks);
                     }
                 }
             }
@@ -266,6 +266,7 @@ public class AspectFromItemStackHandler extends TemplateRecipeHandler {
             ItemAspect.setAspect(aspectStack, aspect);
             this.result = new PositionedStack(aspectStack, TCNAClient.NEI_GUI_WIDTH / 2 - 16 / 2, 5);
 
+            arecipes.add(this);
             initStackList(fullItemStackList);
         }
 
