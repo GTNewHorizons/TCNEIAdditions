@@ -122,22 +122,6 @@ public class AspectFromItemStackHandler extends TemplateRecipeHandler {
     }
 
     @Override
-    public void loadUsageRecipes(ItemStack ingredient) {
-        final AspectList tags = getAspectsForItemStack(ingredient);
-
-        if (tags != null) {
-            for (Aspect aspect : tags.getAspectsSorted()) {
-                if (Thaumcraft.proxy.playerKnowledge.hasDiscoveredAspect(playerName, aspect)) {
-                    final List<ItemStack> containingItemStacks = findContainingItemStacks(aspect);
-                    if (!containingItemStacks.isEmpty()) {
-                        new AspectCachedRecipe(aspect, containingItemStacks);
-                    }
-                }
-            }
-        }
-    }
-
-    @Override
     public void drawBackground(int recipe) {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
