@@ -357,16 +357,14 @@ public class ArcaneCraftingShapedHandler extends ArcaneShapedRecipeHandler {
 
                 } else if (ingredient.getItem().getContainerItem(ingredient) == null
                         || !ingredient.getItem().getContainerItem(ingredient).getItem().equals(ingredient.getItem())) {
-                            if (ingredient.getItem().getContainerItem(ingredient) != null)
-                                System.out.println(ingredient);
                             continue;
                         }
 
-                String text = "NC";
-                var color = 0xFDD835;
+                final String text = "NC";
+                final int color = 0xFFFF00;
 
-                float scale = 0.75f;
-                boolean shadow = false;
+                final float scale = 0.75f;
+                final boolean shadow = false;
 
                 FontRenderer fontRenderer = net.minecraft.client.Minecraft.getMinecraft().fontRenderer;
                 int x = (int) ((stack.relx) / scale) - 5;
