@@ -10,6 +10,8 @@ import java.util.Collections;
 import java.util.List;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
@@ -27,6 +29,7 @@ import codechicken.nei.PositionedStack;
 import codechicken.nei.guihook.GuiContainerManager;
 import codechicken.nei.recipe.GuiRecipe;
 import codechicken.nei.recipe.ShapedRecipeHandler;
+import cpw.mods.fml.common.registry.GameRegistry;
 import ru.timeconqueror.tcneiadditions.client.TCNAClient;
 import ru.timeconqueror.tcneiadditions.nei.ResearchInfo;
 import ru.timeconqueror.tcneiadditions.util.TCNAConfig;
@@ -41,6 +44,7 @@ import thaumcraft.api.research.ResearchItem;
 import thaumcraft.api.wands.WandCap;
 import thaumcraft.api.wands.WandRod;
 import thaumcraft.client.lib.UtilsFX;
+import thaumcraft.common.items.ItemEldritchObject;
 import thaumcraft.common.items.wands.ItemWandCasting;
 
 public class ArcaneCraftingShapedHandler extends ArcaneShapedRecipeHandler {
@@ -48,6 +52,15 @@ public class ArcaneCraftingShapedHandler extends ArcaneShapedRecipeHandler {
     private final String userName = Minecraft.getMinecraft().getSession().getUsername();
     private int ySizeNormal, ySizeRod, ySizeCap;
     private TCNAClient tcnaClient = TCNAClient.getInstance();
+
+    // Primordial pearl is weirdly special with way it's handled in non-consume recipes
+    // out of the current 4 recipes, only 2 don't consume it (stored in NC_Whitelist):
+    // - Advanced Alchemical Construct (meta 3)
+    // - Primal Scribing tools
+    // Tested and checked in daily 2025-10-24+205
+    private final Item[] NC_Whitelist = { GameRegistry.findItem("Thaumcraft", "blockMetalDevice"),
+            GameRegistry.findItem("ForbiddenMagic", "Primewell"), };
+    private final Item[] NC_Blacklist = { GameRegistry.findItem("gregtech", "gt.metatool.01"), };
 
     @Override
     public void loadTransferRects() {
@@ -273,6 +286,7 @@ public class ArcaneCraftingShapedHandler extends ArcaneShapedRecipeHandler {
     @Override
     public void drawExtras(int recipeIndex) {
         CachedRecipe cRecipe = arecipes.get(recipeIndex);
+
         if (cRecipe instanceof ArcaneShapedCachedRecipe cachedRecipe) {
             if (!cachedRecipe.shouldShowRecipe) {
                 String textToDraw = StatCollector.translateToLocal("tcneiadditions.research.missing");
@@ -322,6 +336,46 @@ public class ArcaneCraftingShapedHandler extends ArcaneShapedRecipeHandler {
                     r.onDraw(0, recipeY);
                     recipeY += 13;
                 }
+            }
+        }
+
+        ItemStack resultStack = cRecipe.getResult().item;
+        Item resultItem = resultStack.getItem();
+
+        for (PositionedStack stack : cRecipe.getIngredients()) {
+            ItemStack ingredient = stack.item;
+            if (ingredient.getItem().equals(NC_Blacklist[0])) continue;
+            if (ingredient.getItem().hasContainerItem(ingredient)
+                    || ingredient.getItem() instanceof ItemEldritchObject) {
+                if (ingredient.getItem() instanceof ItemEldritchObject && ingredient.getItemDamage() == 3) {
+                    // Uses primordial pearl
+                    if ((resultItem.equals(NC_Whitelist[0])) && (resultStack.getItemDamage() != 3)) {
+                        break;
+                    } else if (!resultItem.equals(NC_Whitelist[1]) && !resultItem.equals(NC_Whitelist[0])) {
+                        break;
+                    }
+
+                } else if (ingredient.getItem().getContainerItem(ingredient) == null
+                        || !ingredient.getItem().getContainerItem(ingredient).getItem().equals(ingredient.getItem())) {
+                            if (ingredient.getItem().getContainerItem(ingredient) != null)
+                                System.out.println(ingredient);
+                            continue;
+                        }
+
+                String text = "NC";
+                var color = 0xFDD835;
+
+                float scale = 0.75f;
+                boolean shadow = false;
+
+                FontRenderer fontRenderer = net.minecraft.client.Minecraft.getMinecraft().fontRenderer;
+                int x = (int) ((stack.relx) / scale) - 5;
+                int y = (int) ((stack.rely) / scale) - 2;
+
+                GL11.glPushMatrix();
+                GL11.glScalef(scale, scale, 1);
+                fontRenderer.drawString(text, x, y, color, shadow);
+                GL11.glPopMatrix();
             }
         }
 
