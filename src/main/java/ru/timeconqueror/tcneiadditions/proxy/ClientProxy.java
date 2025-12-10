@@ -9,7 +9,6 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import ru.timeconqueror.tcneiadditions.HandlerRemover;
 import ru.timeconqueror.tcneiadditions.client.TCNAClient;
 import ru.timeconqueror.tcneiadditions.nei.IMCForNEI;
-import ru.timeconqueror.tcneiadditions.nei.NEIConfig;
 import ru.timeconqueror.tcneiadditions.util.TCNAConfig;
 
 @SuppressWarnings("unused")
