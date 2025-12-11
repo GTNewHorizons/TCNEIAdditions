@@ -1,9 +1,5 @@
 package ru.timeconqueror.tcneiadditions.nei;
 
-import static codechicken.lib.gui.GuiDraw.changeTexture;
-import static codechicken.lib.gui.GuiDraw.drawString;
-import static codechicken.lib.gui.GuiDraw.drawTexturedModalRect;
-
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -19,7 +15,11 @@ import org.lwjgl.opengl.GL11;
 import com.djgiannuzz.thaumcraftneiplugin.ModItems;
 import com.djgiannuzz.thaumcraftneiplugin.items.ItemAspect;
 
+import codechicken.lib.gui.GuiDraw;
+import codechicken.lib.gui.GuiDraw.ITooltipLineHandler;
+import codechicken.nei.ItemsTooltipLineHandler;
 import codechicken.nei.PositionedStack;
+import codechicken.nei.recipe.GuiRecipe;
 import codechicken.nei.recipe.TemplateRecipeHandler;
 import ru.timeconqueror.tcneiadditions.TCNEIAdditions;
 import ru.timeconqueror.tcneiadditions.client.TCNAClient;
@@ -29,6 +29,7 @@ import thaumcraft.api.aspects.AspectList;
 import thaumcraft.client.gui.GuiResearchRecipe;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.lib.crafting.ThaumcraftCraftingManager;
+import thaumcraft.common.lib.research.ScanManager;
 
 public class AspectFromItemStackHandler extends TemplateRecipeHandler {
 
@@ -46,6 +47,9 @@ public class AspectFromItemStackHandler extends TemplateRecipeHandler {
     private int ticks;
     private TCNAClient tcnaClient = TCNAClient.getInstance();
 
+    private ITooltipLineHandler aspectsTooltipLineHandler = null;
+    private ItemStack aspectsTooltipStack = null;
+
     public AspectFromItemStackHandler() {
         playerName = Minecraft.getMinecraft().getSession().getUsername();
     }
@@ -55,9 +59,52 @@ public class AspectFromItemStackHandler extends TemplateRecipeHandler {
         return StatCollector.translateToLocal("tcneiadditions.aspect_from_itemstack.title");
     }
 
+    protected AspectList getAspectsForItemStack(ItemStack stack) {
+        final int hash = ScanManager.generateItemHash(stack.getItem(), stack.getItemDamage());
+        final List<String> list = (List) Thaumcraft.proxy.getScannedObjects().get(playerName);
+
+        if (list != null && (list.contains("@" + hash) || list.contains("#" + hash))) {
+            final AspectList tags = ThaumcraftCraftingManager.getObjectTags(stack);
+            return ThaumcraftCraftingManager.getBonusTags(stack, tags);
+        }
+
+        return null;
+    }
+
     @Override
-    public int recipiesPerPage() {
-        return 1;
+    public List<String> handleItemTooltip(GuiRecipe<?> gui, ItemStack stack, List<String> currenttip, int recipe) {
+
+        if (stack == null) {
+            this.aspectsTooltipStack = stack;
+            this.aspectsTooltipLineHandler = null;
+        } else if (aspectsTooltipStack == null || !ItemStack.areItemStacksEqual(aspectsTooltipStack, stack)) {
+            final AspectList tags = getAspectsForItemStack(stack);
+            this.aspectsTooltipStack = stack;
+            this.aspectsTooltipLineHandler = null;
+
+            if (tags != null && tags.size() > 0) {
+                final List<ItemStack> inputs = new ArrayList<>();
+
+                for (Aspect aspect : tags.getAspectsSortedAmount()) {
+                    final ItemStack aspectStack = new ItemStack(ModItems.itemAspect);
+                    ItemAspect.setAspect(aspectStack, aspect);
+                    aspectStack.stackSize = tags.getAmount(aspect);
+                    inputs.add(aspectStack);
+                }
+
+                this.aspectsTooltipLineHandler = new ItemsTooltipLineHandler(
+                        StatCollector.translateToLocal("tcneiadditions.aspect_from_itemstack.aspect_list"),
+                        inputs,
+                        true,
+                        Integer.MAX_VALUE);
+            }
+        }
+
+        if (this.aspectsTooltipLineHandler != null) {
+            currenttip.add(GuiDraw.TOOLTIP_HANDLER + GuiDraw.getTipLineId(this.aspectsTooltipLineHandler));
+        }
+
+        return currenttip;
     }
 
     @Override
@@ -66,8 +113,7 @@ public class AspectFromItemStackHandler extends TemplateRecipeHandler {
             Aspect aspect = ItemAspect.getAspects(ingredient).getAspects()[0];
 
             if (Thaumcraft.proxy.playerKnowledge.hasDiscoveredAspect(playerName, aspect)) {
-
-                List<ItemStack> containingItemStacks = findContainingItemStacks(aspect);
+                final List<ItemStack> containingItemStacks = findContainingItemStacks(aspect);
                 if (!containingItemStacks.isEmpty()) {
                     new AspectCachedRecipe(aspect, containingItemStacks);
                 }
@@ -79,7 +125,7 @@ public class AspectFromItemStackHandler extends TemplateRecipeHandler {
     public void drawBackground(int recipe) {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
-        changeTexture(THAUM_OVERLAYS);
+        GuiDraw.changeTexture(THAUM_OVERLAYS);
         {
             GL11.glEnable(GL11.GL_BLEND);
             GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
@@ -87,12 +133,12 @@ public class AspectFromItemStackHandler extends TemplateRecipeHandler {
                 int textureSize = 16;
                 float scaleFactor = 1.75F;
                 int x = TCNAClient.NEI_GUI_WIDTH / 2;
-                int y = 28;
+                int y = 13;
                 GL11.glTranslatef(x, y, 0);
                 GL11.glScalef(scaleFactor, scaleFactor, 1.0F);
 
                 GL11.glTranslatef(-0.07F, 0.1F, 0);
-                drawTexturedModalRect(-textureSize / 2, -textureSize / 2, 20, 3, 16, 16);
+                GuiDraw.drawTexturedModalRect(-textureSize / 2, -textureSize / 2, 20, 3, 16, 16);
                 GL11.glTranslatef(0.07F, -0.1F, 0);
 
                 GL11.glScalef(1 / scaleFactor, 1 / scaleFactor, 1.0F);
@@ -102,20 +148,20 @@ public class AspectFromItemStackHandler extends TemplateRecipeHandler {
         }
 
         if (!ThaumcraftHooks.isDataLoaded()) {
-            drawString(
+            GuiDraw.drawString(
                     I18n.format(
                             "tcneiadditions.aspect_from_itemstack.still_load",
                             ThaumcraftHooks.getItemsLoaded(),
                             ThaumcraftHooks.getTotalToLoad()),
                     2,
-                    47,
+                    32,
                     tcnaClient.getColor("tcneiadditions.gui.loadingTextColor"),
                     true);
         }
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
-        changeTexture(BACKGROUND);
-        drawTexturedModalRect(
+        GuiDraw.changeTexture(BACKGROUND);
+        GuiDraw.drawTexturedModalRect(
                 STACKS_OVERLAY_START_X,
                 STACKS_OVERLAY_START_Y,
                 0,
@@ -141,8 +187,8 @@ public class AspectFromItemStackHandler extends TemplateRecipeHandler {
 
             if (ticks % 200 == 0) {
                 if (!arecipes.isEmpty() && arecipes.get(0) instanceof AspectCachedRecipe) {
-                    AspectCachedRecipe first = ((AspectCachedRecipe) arecipes.get(0));
-                    List<ItemStack> fullList = findContainingItemStacks(first.aspect);
+                    final AspectCachedRecipe first = ((AspectCachedRecipe) arecipes.get(0));
+                    final List<ItemStack> fullList = findContainingItemStacks(first.aspect);
                     first.initStackList(fullList);
                 }
             }
@@ -200,17 +246,17 @@ public class AspectFromItemStackHandler extends TemplateRecipeHandler {
             this.start = start;
             this.aspect = aspect;
 
-            ItemStack aspectStack = new ItemStack(ModItems.itemAspect);
+            final ItemStack aspectStack = new ItemStack(ModItems.itemAspect);
             ItemAspect.setAspect(aspectStack, aspect);
-            result = new PositionedStack(aspectStack, TCNAClient.NEI_GUI_WIDTH / 2 - 16 / 2, 20);
+            this.result = new PositionedStack(aspectStack, TCNAClient.NEI_GUI_WIDTH / 2 - 16 / 2, 5);
 
             arecipes.add(this);
             initStackList(fullItemStackList);
         }
 
         private void initStackList(List<ItemStack> fullItemStackList) {
-            localPageStacks = getItemsInInterval(fullItemStackList);
-            ingredients = null;
+            this.localPageStacks = getItemsInInterval(fullItemStackList);
+            this.ingredients = null;
 
             if (next != null) next.initStackList(fullItemStackList);
             else if (start + STACKS_COUNT < fullItemStackList.size()) {
