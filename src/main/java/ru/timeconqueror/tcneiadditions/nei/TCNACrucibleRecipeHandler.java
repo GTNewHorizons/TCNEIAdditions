@@ -44,7 +44,7 @@ public class TCNACrucibleRecipeHandler extends CrucibleRecipeHandler {
 
     @Override
     public void loadTransferRects() {
-        TCUtil.loadTransferRects(this);
+        TCUtil.loadTransferRects(this, 13);
     }
 
     @Override
@@ -142,7 +142,7 @@ public class TCNACrucibleRecipeHandler extends CrucibleRecipeHandler {
         if (cRecipe instanceof CrucibleCachedRecipe cachedRecipe) {
             if (!cachedRecipe.shouldShowRecipe) {
                 String textToDraw = StatCollector.translateToLocal("tcneiadditions.research.missing");
-                int y = 28;
+                int y = 38;
                 for (Object text : Minecraft.getMinecraft().fontRenderer.listFormattedStringToWidth(textToDraw, 162)) {
                     GuiDraw.drawStringC(
                             (String) text,
@@ -159,11 +159,11 @@ public class TCNACrucibleRecipeHandler extends CrucibleRecipeHandler {
             GuiDraw.drawString(
                     EnumChatFormatting.BOLD + StatCollector.translateToLocal("tcneiadditions.research.researchName"),
                     0,
-                    5,
+                    13,
                     tcnaClient.getColor("tcneiadditions.gui.textColor"),
                     false);
             if (cRecipe instanceof CrucibleCachedRecipe cachedRecipe) {
-                int recipeY = 15;
+                int recipeY = 23;
                 for (ResearchInfo r : cachedRecipe.prereqs) {
                     r.onDraw(0, recipeY);
                     recipeY += 13;
@@ -171,7 +171,7 @@ public class TCNACrucibleRecipeHandler extends CrucibleRecipeHandler {
             }
         }
 
-        TCUtil.drawSeeAllRecipesLabel();
+        TCUtil.drawSeeAllRecipesLabel(13);
     }
 
     @Override
