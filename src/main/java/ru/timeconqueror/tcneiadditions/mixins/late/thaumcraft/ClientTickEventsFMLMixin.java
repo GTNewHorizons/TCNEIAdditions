@@ -1,10 +1,12 @@
 package ru.timeconqueror.tcneiadditions.mixins.late.thaumcraft;
 
 import java.awt.Point;
-import java.awt.Rectangle;
 import java.util.List;
 
-import org.lwjgl.input.Mouse;
+import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+
 import org.lwjgl.opengl.GL11;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -14,13 +16,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import codechicken.lib.gui.GuiDraw;
 import codechicken.nei.guihook.GuiContainerManager;
 import codechicken.nei.recipe.GuiRecipe;
-import cpw.mods.fml.client.FMLClientHandler;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.ScaledResolution;
-import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.Slot;
-import net.minecraft.item.ItemStack;
 import ru.timeconqueror.tcneiadditions.nei.AspectFromItemStackHandler;
 import ru.timeconqueror.tcneiadditions.util.GuiRecipeHelper;
 import thaumcraft.api.aspects.Aspect;
@@ -46,7 +41,7 @@ public class ClientTickEventsFMLMixin {
             return;
         }
 
-        if (gui instanceof GuiRecipe<?> guiRecipe && guiRecipe.getHandler() instanceof AspectFromItemStackHandler) {
+        if (gui instanceof GuiRecipe<?>guiRecipe && guiRecipe.getHandler() instanceof AspectFromItemStackHandler) {
             final Point mouse = GuiDraw.getMousePosition();
             int xSize = UtilsFX.getGuiXSize(gui);
             int ySize = UtilsFX.getGuiYSize(gui);
@@ -61,7 +56,7 @@ public class ClientTickEventsFMLMixin {
         final int h = ScanManager.generateItemHash(stack.getItem(), stack.getItemDamage());
         final List<String> list = (List) Thaumcraft.proxy.getScannedObjects().get(player.getCommandSenderName());
 
-        if (list != null && (list.contains("@" + h)  || list.contains("#" + h))) {
+        if (list != null && (list.contains("@" + h) || list.contains("#" + h))) {
             renderAspects(gui, player, stack);
             ci.cancel();
         }
@@ -103,16 +98,8 @@ public class ClientTickEventsFMLMixin {
                 GL11.glDisable(GL11.GL_BLEND);
                 GL11.glPopMatrix();
 
-                if (Thaumcraft.proxy.playerKnowledge
-                        .hasDiscoveredAspect(player.getCommandSenderName(), tag)) {
-                    UtilsFX.drawTag(
-                            x + shiftx,
-                            y + shifty,
-                            tag,
-                            tags.getAmount(tag),
-                            0,
-                            UtilsFX.getGuiZLevel(gui)
-                    );
+                if (Thaumcraft.proxy.playerKnowledge.hasDiscoveredAspect(player.getCommandSenderName(), tag)) {
+                    UtilsFX.drawTag(x + shiftx, y + shifty, tag, tags.getAmount(tag), 0, UtilsFX.getGuiZLevel(gui));
                 } else {
                     UtilsFX.bindTexture("textures/aspects/_unknown.png");
                     GL11.glPushMatrix();
