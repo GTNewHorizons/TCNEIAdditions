@@ -19,6 +19,7 @@ public enum Mixins implements IMixins {
         .setPhase(Phase.LATE)),
     MAPPING_THREAD_HOOK(new MixinBuilder()
         .addClientMixins("thaumcraft.MappingThreadMixin")
+        .addClientMixins("thaumcraft.ClientTickEventsFMLMixin")
         .addRequiredMod(TargetedMod.THAUMCRAFT)
         .setPhase(Phase.LATE)),
     FIX_NEICONFIG_VERSION(new MixinBuilder()

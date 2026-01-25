@@ -46,7 +46,7 @@ public class ArcaneCraftingShapelessHandler extends ArcaneShapelessRecipeHandler
 
     @Override
     public void loadTransferRects() {
-        TCUtil.loadTransferRects(this);
+        TCUtil.loadTransferRects(this, 7);
     }
 
     @Override
@@ -161,7 +161,7 @@ public class ArcaneCraftingShapelessHandler extends ArcaneShapelessRecipeHandler
         if (cRecipe instanceof ArcaneShapelessCachedRecipe cachedRecipe) {
             if (!cachedRecipe.shouldShowRecipe) {
                 String textToDraw = StatCollector.translateToLocal("tcneiadditions.research.missing");
-                int y = 28;
+                int y = 30;
                 for (Object text : Minecraft.getMinecraft().fontRenderer.listFormattedStringToWidth(textToDraw, 162)) {
                     GuiDraw.drawStringC(
                             (String) text,
@@ -178,11 +178,11 @@ public class ArcaneCraftingShapelessHandler extends ArcaneShapelessRecipeHandler
             GuiDraw.drawString(
                     EnumChatFormatting.BOLD + StatCollector.translateToLocal("tcneiadditions.research.researchName"),
                     0,
-                    5,
+                    7,
                     tcnaClient.getColor("tcneiadditions.gui.textColor"),
                     false);
             if (cRecipe instanceof ArcaneShapelessCachedRecipe cachedRecipe) {
-                int recipeY = 15;
+                int recipeY = 17;
                 for (ResearchInfo r : cachedRecipe.prereqs) {
                     r.onDraw(0, recipeY);
                     recipeY += 13;
@@ -190,7 +190,7 @@ public class ArcaneCraftingShapelessHandler extends ArcaneShapelessRecipeHandler
             }
         }
 
-        TCUtil.drawSeeAllRecipesLabel();
+        TCUtil.drawSeeAllRecipesLabel(7);
     }
 
     private boolean isValidInput(Object input) {
