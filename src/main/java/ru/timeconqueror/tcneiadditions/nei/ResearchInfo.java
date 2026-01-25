@@ -88,8 +88,8 @@ public class ResearchInfo {
     public Rectangle getRect(GuiRecipe<?> gui, int recipeIndex) {
         final Point offset = gui.getRecipePosition(recipeIndex);
         return new Rectangle(
-                GuiRecipeHelper.getGuiLeft(gui) + offset.x + prevX,
-                GuiRecipeHelper.getGuiTop(gui) + offset.y + prevY - 10,
+                GuiRecipeHelper.getGuiLeft(gui) + prevX + 5,
+                GuiRecipeHelper.getGuiTop(gui) + prevY + 21,
                 24,
                 13);
     }
