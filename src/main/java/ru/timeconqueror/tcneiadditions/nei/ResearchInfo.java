@@ -87,7 +87,7 @@ public class ResearchInfo {
     public Rectangle getRect(GuiRecipe<?> gui, int recipeIndex) {
         return new Rectangle(
                 GuiRecipeHelper.getGuiLeft(gui) + prevX + 5,
-                GuiRecipeHelper.getGuiTop(gui) + prevY + 31,
+                GuiRecipeHelper.getGuiTop(gui) + prevY + 21,
                 24,
                 13);
     }
