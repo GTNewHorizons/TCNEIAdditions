@@ -244,21 +244,21 @@ public class TCUtil {
         }
     }
 
-    public static void loadTransferRects(TemplateRecipeHandler handler) {
+    public static void loadTransferRects(TemplateRecipeHandler handler, int y) {
         int stringLength = GuiDraw.getStringWidth(
                 EnumChatFormatting.BOLD + StatCollector.translateToLocal("tcneiadditions.gui.nei.seeAll"));
         handler.transferRects.add(
                 new TemplateRecipeHandler.RecipeTransferRect(
-                        new Rectangle(162 - stringLength, 5, stringLength, 9),
+                        new Rectangle(162 - stringLength, y, stringLength, 9),
                         handler.getOverlayIdentifier(),
                         new Object[0]));
     }
 
-    public static void drawSeeAllRecipesLabel() {
+    public static void drawSeeAllRecipesLabel(int y) {
         GuiDraw.drawStringR(
                 EnumChatFormatting.BOLD + StatCollector.translateToLocal("tcneiadditions.gui.nei.seeAll"),
                 162,
-                5,
+                y,
                 tcnaClient.getColor("tcneiadditions.gui.textColor"),
                 false);
     }

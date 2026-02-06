@@ -31,11 +31,6 @@ public class AspectCombinationHandler extends TemplateRecipeHandler {
     }
 
     @Override
-    public int recipiesPerPage() {
-        return 5;
-    }
-
-    @Override
     public String getRecipeName() {
         return StatCollector.translateToLocal("tcneiadditions.aspect_combination.title");
     }

@@ -41,7 +41,7 @@ public class TCNAClient implements IResourceManagerReloadListener {
 
     public static final int NEI_RECIPE_HEIGHT = HandlerInfo.DEFAULT_HEIGHT;
     public static final int NEI_GUI_WIDTH = HandlerInfo.DEFAULT_WIDTH;
-    public static final int NEI_GUI_HEIGHT = 131;
+    public static final int NEI_GUI_HEIGHT = 116;
 
     private static final TCNAClient instance = new TCNAClient();
     private final Queue<FutureTask<?>> tasks = Queues.newArrayDeque();
