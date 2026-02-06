@@ -9,20 +9,37 @@ public class IMCForNEI {
     public static void IMCSender() {
         setNBTAndSend(
                 "ru.timeconqueror.tcneiadditions.nei.arcaneworkbench.ArcaneCraftingShapedHandler",
-                "Thaumcraft:blockTable:15");
+                "Thaumcraft:blockTable:15",
+                4,
+                138);
         setNBTAndSend(
                 "ru.timeconqueror.tcneiadditions.nei.arcaneworkbench.ArcaneCraftingShapelessHandler",
-                "Thaumcraft:blockTable:15");
-        setNBTAndSend("ru.timeconqueror.tcneiadditions.nei.TCNACrucibleRecipeHandler", "Thaumcraft:blockMetalDevice");
-        setNBTAndSend("ru.timeconqueror.tcneiadditions.nei.TCNAInfusionRecipeHandler", "Thaumcraft:blockStoneDevice:2");
+                "Thaumcraft:blockTable:15",
+                4,
+                138);
+        setNBTAndSend(
+                "ru.timeconqueror.tcneiadditions.nei.TCNACrucibleRecipeHandler",
+                "Thaumcraft:blockMetalDevice",
+                -2,
+                136);
+        setNBTAndSend(
+                "ru.timeconqueror.tcneiadditions.nei.TCNAInfusionRecipeHandler",
+                "Thaumcraft:blockStoneDevice:2",
+                6,
+                152);
+        setNBTAndSend(
+                "ru.timeconqueror.tcneiadditions.nei.AspectFromItemStackHandler",
+                "Thaumcraft:ItemResearchNotes",
+                0,
+                147);
         setNBTAndSend(
                 "ru.timeconqueror.tcneiadditions.nei.AspectCombinationHandler",
                 "Thaumcraft:ItemResearchNotes",
-                20,
-                16);
+                -1,
+                43);
     }
 
-    private static void setNBTAndSend(String name, String stack, int height, int maxRecipesPerPage) {
+    private static void setNBTAndSend(String name, String stack, int yShift, int height) {
         NBTTagCompound NBT = new NBTTagCompound();
         NBT.setString("handler", name);
         NBT.setString("modName", "Thaumcraft");
@@ -30,11 +47,9 @@ public class IMCForNEI {
         NBT.setBoolean("modRequired", true);
         NBT.setString("itemName", stack);
         NBT.setInteger("handlerHeight", height);
-        NBT.setInteger("maxRecipesPerPage", maxRecipesPerPage);
+        NBT.setInteger("yShift", yShift);
+        NBT.setInteger("maxRecipesPerPage", 2);
         FMLInterModComms.sendMessage("NotEnoughItems", "registerHandlerInfo", NBT);
     }
 
-    private static void setNBTAndSend(String name, String stack) {
-        setNBTAndSend(name, stack, 140, 1);
-    }
 }
