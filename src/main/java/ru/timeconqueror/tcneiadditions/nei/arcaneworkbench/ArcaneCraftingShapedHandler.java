@@ -378,7 +378,7 @@ public class ArcaneCraftingShapedHandler extends ArcaneShapedRecipeHandler {
             }
         }
 
-        TCUtil.drawSeeAllRecipesLabel();
+        TCUtil.drawSeeAllRecipesLabel(7);
     }
 
     private class ArcaneShapedCachedRecipe extends ShapedRecipeHandler.CachedShapedRecipe
