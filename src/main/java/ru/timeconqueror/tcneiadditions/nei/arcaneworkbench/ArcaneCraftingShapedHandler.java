@@ -64,7 +64,7 @@ public class ArcaneCraftingShapedHandler extends ArcaneShapedRecipeHandler {
 
     @Override
     public void loadTransferRects() {
-        TCUtil.loadTransferRects(this);
+        TCUtil.loadTransferRects(this, 7);
     }
 
     @Override
@@ -290,7 +290,7 @@ public class ArcaneCraftingShapedHandler extends ArcaneShapedRecipeHandler {
         if (cRecipe instanceof ArcaneShapedCachedRecipe cachedRecipe) {
             if (!cachedRecipe.shouldShowRecipe) {
                 String textToDraw = StatCollector.translateToLocal("tcneiadditions.research.missing");
-                int y = 28;
+                int y = 30;
                 for (Object text : Minecraft.getMinecraft().fontRenderer.listFormattedStringToWidth(textToDraw, 162)) {
                     GuiDraw.drawStringC(
                             (String) text,
@@ -304,7 +304,7 @@ public class ArcaneCraftingShapedHandler extends ArcaneShapedRecipeHandler {
         } else if (cRecipe instanceof ArcaneWandCachedRecipe cachedRecipe) {
             if (!cachedRecipe.shouldShowRecipe) {
                 String textToDraw = StatCollector.translateToLocal("tcneiadditions.research.missing");
-                int y = 28;
+                int y = 30;
                 for (Object text : Minecraft.getMinecraft().fontRenderer.listFormattedStringToWidth(textToDraw, 162)) {
                     GuiDraw.drawStringC(
                             (String) text,
@@ -321,17 +321,17 @@ public class ArcaneCraftingShapedHandler extends ArcaneShapedRecipeHandler {
             GuiDraw.drawString(
                     EnumChatFormatting.BOLD + StatCollector.translateToLocal("tcneiadditions.research.researchName"),
                     0,
-                    5,
+                    7,
                     tcnaClient.getColor("tcneiadditions.gui.textColor"),
                     false);
             if (cRecipe instanceof ArcaneShapedCachedRecipe cachedRecipe) {
-                int recipeY = 15;
+                int recipeY = 17;
                 for (ResearchInfo r : cachedRecipe.prereqs) {
                     r.onDraw(0, recipeY);
                     recipeY += 13;
                 }
             } else if (cRecipe instanceof ArcaneWandCachedRecipe cachedRecipe) {
-                int recipeY = 15;
+                int recipeY = 17;
                 for (ResearchInfo r : cachedRecipe.prereqs) {
                     r.onDraw(0, recipeY);
                     recipeY += 13;
@@ -377,7 +377,7 @@ public class ArcaneCraftingShapedHandler extends ArcaneShapedRecipeHandler {
             }
         }
 
-        TCUtil.drawSeeAllRecipesLabel();
+        TCUtil.drawSeeAllRecipesLabel(7);
     }
 
     private class ArcaneShapedCachedRecipe extends ShapedRecipeHandler.CachedShapedRecipe
