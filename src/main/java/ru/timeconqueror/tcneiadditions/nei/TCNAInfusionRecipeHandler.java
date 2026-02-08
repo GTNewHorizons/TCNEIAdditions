@@ -28,7 +28,6 @@ import codechicken.nei.PositionedStack;
 import codechicken.nei.guihook.GuiContainerManager;
 import codechicken.nei.recipe.GuiRecipe;
 import ru.timeconqueror.tcneiadditions.client.TCNAClient;
-import ru.timeconqueror.tcneiadditions.util.GuiRecipeHelper;
 import ru.timeconqueror.tcneiadditions.util.TCNAConfig;
 import ru.timeconqueror.tcneiadditions.util.TCUtil;
 import thaumcraft.api.ThaumcraftApi;
@@ -49,7 +48,14 @@ public class TCNAInfusionRecipeHandler extends InfusionRecipeHandler {
 
     @Override
     public void loadTransferRects() {
-        TCUtil.loadTransferRects(this);
+        TCUtil.loadTransferRects(this, 5);
+    }
+
+    @Override
+    public int getRecipeHeight(int recipe) {
+        final AspectList aspects = this.aspectsAmount.get(recipe);
+        final int rows = (int) Math.ceil((double) aspects.size() / aspectsPerRow);
+        return 152 + (rows - 1) * 20;
     }
 
     @Override
@@ -158,7 +164,7 @@ public class TCNAInfusionRecipeHandler extends InfusionRecipeHandler {
             }
         }
 
-        TCUtil.drawSeeAllRecipesLabel();
+        TCUtil.drawSeeAllRecipesLabel(5);
     }
 
     @Override
@@ -230,11 +236,7 @@ public class TCNAInfusionRecipeHandler extends InfusionRecipeHandler {
 
     protected Rectangle getResearchRect(GuiRecipe<?> gui, int recipeIndex) {
         Point offset = gui.getRecipePosition(recipeIndex);
-        return new Rectangle(
-                GuiRecipeHelper.getGuiLeft(gui) + offset.x + 2,
-                GuiRecipeHelper.getGuiTop(gui) + offset.y + 181,
-                GuiRecipeHelper.getXSize(gui) - 9,
-                this.ySize);
+        return new Rectangle(gui.guiLeft + offset.x + 2, gui.guiTop + offset.y + 181, gui.xSize - 9, this.ySize);
     }
 
     private class InfusionCachedRecipe extends CachedRecipe {
