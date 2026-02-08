@@ -17,7 +17,6 @@ import codechicken.lib.gui.GuiDraw;
 import codechicken.nei.guihook.GuiContainerManager;
 import codechicken.nei.recipe.GuiRecipe;
 import ru.timeconqueror.tcneiadditions.nei.AspectFromItemStackHandler;
-import ru.timeconqueror.tcneiadditions.util.GuiRecipeHelper;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.client.lib.ClientTickEventsFML;
@@ -43,20 +42,17 @@ public class ClientTickEventsFMLMixin {
 
         if (gui instanceof GuiRecipe<?>guiRecipe && guiRecipe.getHandler() instanceof AspectFromItemStackHandler) {
             final Point mouse = GuiDraw.getMousePosition();
-            int xSize = UtilsFX.getGuiXSize(gui);
-            int ySize = UtilsFX.getGuiYSize(gui);
-            int guiLeft = GuiRecipeHelper.getGuiLeft(guiRecipe);
-            int guiTop = GuiRecipeHelper.getGuiTop(guiRecipe);
-
-            if (mouse.x >= guiLeft && mouse.x <= guiLeft + xSize && mouse.y >= guiTop && mouse.y <= guiTop + ySize) {
+            if (mouse.x >= guiRecipe.guiLeft && mouse.x <= guiRecipe.guiLeft + gui.xSize
+                    && mouse.y >= guiRecipe.guiTop
+                    && mouse.y <= guiRecipe.guiTop + gui.ySize) {
                 return;
             }
         }
 
-        final int h = ScanManager.generateItemHash(stack.getItem(), stack.getItemDamage());
-        final List<String> list = (List) Thaumcraft.proxy.getScannedObjects().get(player.getCommandSenderName());
+        final int hash = ScanManager.generateItemHash(stack.getItem(), stack.getItemDamage());
+        final List<String> list = Thaumcraft.proxy.getScannedObjects().get(player.getCommandSenderName());
 
-        if (list != null && (list.contains("@" + h) || list.contains("#" + h))) {
+        if (list != null && (list.contains("@" + hash) || list.contains("#" + hash))) {
             renderAspects(gui, player, stack);
             ci.cancel();
         }
@@ -67,7 +63,7 @@ public class ClientTickEventsFMLMixin {
         AspectList tags = ThaumcraftCraftingManager.getObjectTags(stack);
         tags = ThaumcraftCraftingManager.getBonusTags(stack, tags);
 
-        if (tags != null && tags.size() > 0) {
+        if (tags.size() > 0) {
             GL11.glPushMatrix();
             GL11.glPushAttrib(GL11.GL_ALL_ATTRIB_BITS);
             GL11.glDisable(GL11.GL_LIGHTING);

@@ -61,7 +61,7 @@ public class AspectFromItemStackHandler extends TemplateRecipeHandler {
 
     protected AspectList getAspectsForItemStack(ItemStack stack) {
         final int hash = ScanManager.generateItemHash(stack.getItem(), stack.getItemDamage());
-        final List<String> list = (List) Thaumcraft.proxy.getScannedObjects().get(playerName);
+        final List<String> list = Thaumcraft.proxy.getScannedObjects().get(playerName);
 
         if (list != null && (list.contains("@" + hash) || list.contains("#" + hash))) {
             final AspectList tags = ThaumcraftCraftingManager.getObjectTags(stack);

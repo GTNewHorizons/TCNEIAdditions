@@ -11,7 +11,6 @@ import org.lwjgl.opengl.GL11;
 
 import codechicken.lib.gui.GuiDraw;
 import codechicken.nei.recipe.GuiRecipe;
-import ru.timeconqueror.tcneiadditions.util.GuiRecipeHelper;
 import ru.timeconqueror.tcneiadditions.util.TCUtil;
 import thaumcraft.api.research.ResearchCategories;
 import thaumcraft.api.research.ResearchCategoryList;
@@ -87,11 +86,7 @@ public class ResearchInfo {
 
     public Rectangle getRect(GuiRecipe<?> gui, int recipeIndex) {
         final Point offset = gui.getRecipePosition(recipeIndex);
-        return new Rectangle(
-                GuiRecipeHelper.getGuiLeft(gui) + offset.x + prevX,
-                GuiRecipeHelper.getGuiTop(gui) + offset.y + prevY - 10,
-                24,
-                13);
+        return new Rectangle(gui.guiLeft + offset.x + prevX, gui.guiTop + offset.y + prevY, 24, 13);
     }
 
 }
