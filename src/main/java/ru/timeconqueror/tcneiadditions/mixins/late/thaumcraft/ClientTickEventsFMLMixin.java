@@ -72,10 +72,6 @@ public class ClientTickEventsFMLMixin {
             Point mouse = GuiDraw.getMousePosition();
             int shiftx = -8;
             int shifty = -8;
-            if (Thaumcraft.instance.aspectShift) {
-                shiftx -= 8;
-                shifty -= 8;
-            }
 
             int index = 0;
             for (Aspect tag : tags.getAspectsSortedAmount()) {
