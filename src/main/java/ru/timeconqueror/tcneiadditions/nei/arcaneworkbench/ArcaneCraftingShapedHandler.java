@@ -528,36 +528,6 @@ public class ArcaneCraftingShapedHandler extends ArcaneShapedRecipeHandler {
         }
 
         @Override
-        public void setIngredients(int width, int height, Object[] items) {
-            if (items != null && items.length > 0) {
-                int[][] positions = new int[][] { { 48, 32 }, { 75, 33 }, { 103, 33 }, { 49, 60 }, { 76, 60 },
-                        { 103, 60 }, { 49, 87 }, { 76, 87 }, { 103, 87 } };
-                int[][] positions2 = new int[][] { { 48, 32 }, { 75, 33 }, { 49, 60 }, { 76, 60 } };
-                int shiftX = 0;
-                int shiftY = 0;
-                for (int x = 0; x < width; ++x) {
-                    for (int y = 0; y < height; ++y) {
-                        Object object = items[y * width + x];
-                        if (!(object instanceof ItemStack) && !(object instanceof ItemStack[])
-                                && !(object instanceof String)
-                                && !(object instanceof List) || object instanceof List && ((List<?>) object).isEmpty())
-                            continue;
-                        if (width == 2 && height == 2) {
-                            positions = positions2;
-                        }
-                        PositionedStack stack = new PositionedStack(
-                                object,
-                                positions[y * width + x][0] + shiftX,
-                                positions[y * width + x][1] + shiftY,
-                                object instanceof ItemStack);
-                        stack.setMaxSize(1);
-                        this.ingredients.add(stack);
-                    }
-                }
-            }
-        }
-
-        @Override
         public void setIngredientPermutation(Collection<PositionedStack> ingredients, ItemStack ingredient) {
             if (ingredient.getItem() instanceof ItemAspect) return;
             super.setIngredientPermutation(ingredients, ingredient);
